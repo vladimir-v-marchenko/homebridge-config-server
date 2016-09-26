@@ -1,0 +1,30 @@
+doctype html
+html(lang='ja')
+	head
+		meta(charset='UTF-8')
+		link(href='css/style.css', rel='stylesheet')
+		script(src="http://code.jquery.com/jquery-3.1.0.min.js", integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=", crossorigin="anonymous")
+		script(type='text/javascript', src='js/script.js')
+	body
+		h1 plugin
+		//-form(method='POST', action='/submit')
+		div
+			each device in config.accessories
+				- var acc = true
+				include includes/_form
+				hr.pink
+			each device in config.platforms
+				- var acc = false
+				include includes/_form
+				hr.blue
+
+			//- add new Service
+			div.add
+
+			- var device = {}
+			- device['accessory'] = ""
+			- device['service'] = data
+			- var acc = true
+			include includes/_form
+			
+			a(href='javascript: void(0)', name='submit', value='submit', type='submit', id='submit') submit

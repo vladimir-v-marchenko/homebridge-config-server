@@ -1,0 +1,12 @@
+.hidden {
+	display: none;
+}
+.pink {
+	border-color: pink;
+}
+.blue {
+	border-color: blue;
+}
+input {
+	display: block;
+}

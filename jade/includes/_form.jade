@@ -1,0 +1,94 @@
+div.device
+	each val, key in device
+		//- Plugin name
+		if key == "accessory" || key =="platform"
+			- var plugin = ''
+			if val.length && val != 'Multi'
+				input(value='#{val}', class='plugin')
+			else
+				- plugin = 'multi'
+				input(value='Multi', class='plugin')
+		//- Service
+		if key == "service"
+			select(name='service', class='service')
+				each d in data
+					if d.displayName == val
+						option(value='#{d.displayName}' selected) #{d.displayName}
+					else
+						option(value='#{d.displayName}') #{d.displayName}
+			//- Characteristics
+			div.char-box
+				each d in data
+					if(d.characteristics)
+						if d.displayName == val
+							div(name='characterisitics' class='characteristic characteristic-#{d.displayName}')
+								h3 Characteristics
+								each c in d.characteristics
+									p(class="characteristic-#{c.displayName}") #{c.displayName}:
+										//- behavior
+										if plugin == 'multi'
+											if device[c.displayName] && device[c.displayName].device == "get"
+												select(name='characteristics-behavior')
+													option(value='get' selected) get
+													option(value='set') set
+											else
+												select(name='characteristics-behavior')
+													option(value='get') get
+													option(value='set' selected) set
+											if !device[c.displayName]
+												//- characteristics
+												input(name="characteristic-#{c.displayName}", value="#{device[c.displayName.toLowerCase()]}", data-name="#{c.displayName}")
+											else
+												//- characteristics
+												input(name="characteristic-#{c.displayName}", value="#{device[c.displayName].command}", data-name="#{c.displayName}")
+										else
+											input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
+								p(class="characteristic-Off") Off:
+									input(name="characteristic-Off", value="", data-name="Off")
+
+								h3 Optional characteristics
+								each c in d.optionalCharacteristics
+									p(class="characteristic-#{c.displayName}") #{c.displayName}:
+										//- behavior
+										if plugin == 'multi'
+											select(name='characteristics-behavior')
+												option(value='get') get
+												option(value='set') set
+											input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
+										else
+											input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
+									p(class="characteristic-Off") Off:
+										input(name="characteristic-Off", value="", data-name="Off")
+
+						else
+							div(name='characterisitics' class='characteristic characteristic-#{d.displayName}' class='hidden')
+								h3 Characteristics
+								p(class="characteristic-Off") Off:
+									input(name="characteristic-Off", value="", data-name="Off")
+								each c in d.characteristics
+									p(class="characteristic-#{c.displayName}") #{c.displayName}:
+										//- behavior
+										if plugin == 'multi'
+											select(name='characteristics-behavior')
+												option(value='get') get
+												option(value='set') set
+										input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
+								h3 Optional characteristics
+								each c in d.optionalCharacteristics
+									p(class="characteristic-#{c.displayName}") #{c.displayName}:
+										//- behavior
+										if plugin == 'multi'
+											select(name='characteristics-behavior')
+												option(value='get') get
+												option(value='set') set
+										input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
+		
+	//- Accessory or Platform
+	p device:
+		select(name='device')
+			if acc == true
+				option(value='accessory' selected) accessory
+				option(value='platform') platform
+			else
+				option(value='accessory') accessory
+				option(value='platform' selected) platform
