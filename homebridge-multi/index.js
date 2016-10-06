@@ -19,15 +19,18 @@ function MultiAccessory(log, config){
 
 MultiAccessory.prototype = {
   cmdExec: function(cmd, callback) {
+		debug('call cmdExec');
     exec(cmd,function(error, stdout, stderr) {
-        callback(error, stdout, stderr);
         debug('command:' + cmd);
+				debug('callback:'+callback);
+        callback(error, stdout, stderr);
         //this.log(cmd+' exec');
     });
   },
 
   setPowerState: function(on, off, powerOn, callback) {
 		var cmd;
+		debug('call setPowerState');
 
     if (powerOn) {
       cmd = on;
@@ -44,7 +47,23 @@ MultiAccessory.prototype = {
         callback(error);
       } else {
         debug('power function succeeded!');
-        callback();
+        callback(stdout);
+      }
+    }.bind(this));
+  },
+
+  getState: function(cmd, callback) {
+    debug('cmd:' + cmd);
+    debug('callback:' + callback);
+
+    this.cmdExec(cmd, function(error, stdout, stderr) {
+      if (error) {
+        debug('get state failed: %s', stderr);
+        callback(error);
+      } else {
+        debug('get state succeeded!');
+				debug('stdout:' + stdout);
+        callback(null, stdout);
       }
     }.bind(this));
   },
@@ -55,6 +74,7 @@ MultiAccessory.prototype = {
   },
 
   getServices: function() {
+		debug('call getService');
     var informationService = new Service.AccessoryInformation();
     informationService.setCharacteristic(Characteristic.Manufacturer, this.manufacturer)
                       .setCharacteristic(Characteristic.Model, this.model)
@@ -62,12 +82,16 @@ MultiAccessory.prototype = {
 
     // Set Service
     var cmdService = new Service[this.service](this.Name, this.Name);
-		console.log(this.Name);
 
+		debug('cmdS:'+this.service);
     // Set characteristics
     for(var conf in this.config) {
+			//conf = conf.replace(/\s+/g, "");
       if(conf == 'Name' || conf == 'Off') continue;
-			var chars = cmdService.getCharacteristic(Characteristic[conf]);
+			var chars = cmdService.getCharacteristic(Characteristic[conf.replace(/\s+/g, "")]);
+			debug("chars:"+chars);
+			debug("conf:"+conf);
+			console.log(chars);
       if(conf == 'On') {
         var command = this.config[conf].command;
         var off_cmd = this.config.Off;
@@ -75,14 +99,21 @@ MultiAccessory.prototype = {
         	chars.on('set', this.setPowerState.bind(this, command, off_cmd));
         	//chars.on('set', this.setPowerState.bind(this, this, command, off_cmd));
         }
-				continue;
-      }
-      if(chars) {
-				chars.on(this.config[conf].behavior, this.cmdExec.bind(this, this.config[conf].command));
-i			}
+      } else if(chars) {
+				console.log(this.config);
+        var behavior = this.config[conf].behavior;
+        var command = this.config[conf].command;
+				if(behavior == 'get') {
+					debug('get:'+ command);
+          chars.on(behavior, this.getState.bind(this, command));
+          //chars.on(behavior, this.getState.bind(command));
+        } else {
+          chars.on(behavior, this.cmdExec.bind(this, command));
+					debug('set:'+ command);
+        }
+			}
     }
 
-		console.log(cmdService);
     return [cmdService];
   }
 };

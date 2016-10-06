@@ -40,6 +40,9 @@ $(function() {
 						} else {
 							console.log(key + ':' + $(this).val());
 							arr[key] = $(this).val();
+							if(key == 'Name') {
+								arr['name'] = $(this).val();
+							}
 						}
 					}
 				});

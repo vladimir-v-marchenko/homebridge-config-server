@@ -44,7 +44,7 @@ div.device
 										else
 											input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
 								p(class="characteristic-Off") Off:
-									input(name="characteristic-Off", value="", data-name="Off")
+									input(name="characteristic-Off", value="#{device['Off']}", data-name="Off")
 
 								h3 Optional characteristics
 								each c in d.optionalCharacteristics
@@ -58,13 +58,13 @@ div.device
 										else
 											input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
 									p(class="characteristic-Off") Off:
-										input(name="characteristic-Off", value="", data-name="Off")
+										input(name="characteristic-Off", value="#{device['Off']}", data-name="Off")
 
 						else
 							div(name='characterisitics' class='characteristic characteristic-#{d.displayName}' class='hidden')
 								h3 Characteristics
 								p(class="characteristic-Off") Off:
-									input(name="characteristic-Off", value="", data-name="Off")
+									input(name="characteristic-Off", value="#{device['Off']}", data-name="Off")
 								each c in d.characteristics
 									p(class="characteristic-#{c.displayName}") #{c.displayName}:
 										//- behavior
