@@ -14,7 +14,7 @@ function MyHttpServer() {
 	this._httpServer.on('request', this._onRequest.bind(this));
 	//this._httpServer.on('listening', this._onListening.bind(this));
 	//this._httpServer.listen(1337, '127.0.0.1');
-	this._httpServer.listen(1337, '192.168.3.7');
+	this._httpServer.listen(1337, '192.168.108.219');
 	this._name = 'hoge';
 }
 
@@ -99,6 +99,7 @@ MyHttpServer.prototype._onRequest = function(req, res) {
 				default :
 					var i = 0;	
 					var services = [];
+          var c = [];
 					for(var item in Service) {
 						// console.log(new Service[item](item, item));
 						/* avoid error:
@@ -109,8 +110,40 @@ MyHttpServer.prototype._onRequest = function(req, res) {
 						 */
 						if(item == 'AccessoryInformation' || item == 'TunneledBTLEAccessoryService') continue;
 						services[i] = new Service[item](item, item);
-						i++;
+            /*
+            var tmp = services[i].characteristics;
+            if(tmp) {
+              console.log(util.inspect(tmp.concat(services[i].optionalCharacteristics)));
+              c[i] = tmp.concat(services[i].optionalCharacteristics);
+            }
+            services[i].characteristics = c.filter(function(x, i, self) {
+                                            return self.indexOf(x) === i;
+                                         });
+            services[i].characteristics = tmp;
+            console.log(util.inspect(services[i].characteristics));
+            services[i].optionalCharacteristics = [];
+						*/
+            i++;
+            //if(i>4) break;
 					}
+
+          for(var s in services) {
+            var tmp = services[s].characteristics;
+            if(tmp) {
+              console.log(typeof tmp);
+              tmp = tmp.concat(services[s].optionalCharacteristics);
+              //console.log(tmp);
+              tmp = tmp.filter(function(x, i, self) {
+                                  return self.indexOf(x) === i;
+                                 });
+            }
+            //console.log(typeof tmp);
+            console.log(util.inspect(services[s].characteristics));
+            services[s].characteristics = tmp;
+            //console.log(typeof services[s].characteristics);
+            services[s].optionalCharacteristics = [];
+            //console.log(service);
+          }
 
 					var config = fs.readFileSync('../config.json', 'UTF-8', function(err, data) {
 						if(err) {

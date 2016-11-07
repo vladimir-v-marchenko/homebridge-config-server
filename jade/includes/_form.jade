@@ -24,7 +24,7 @@ div.device
 							div(name='characterisitics' class='characteristic characteristic-#{d.displayName}')
 								h3 Characteristics
 								each c in d.characteristics
-									p(class="characteristic-#{c.displayName}") #{c.displayName}:
+									p(class="characteristic-#{c.displayName}") #{c.value}.#{c.displayName}:
 										//- behavior
 										if plugin == 'multi'
 											if device[c.displayName] && device[c.displayName].device == "get"
@@ -37,7 +37,7 @@ div.device
 													option(value='set' selected) set
 											if !device[c.displayName]
 												//- characteristics
-												input(name="characteristic-#{c.displayName}", value="#{device[c.displayName.toLowerCase()]}", data-name="#{c.displayName}")
+												input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
 											else
 												//- characteristics
 												input(name="characteristic-#{c.displayName}", value="#{device[c.displayName].command}", data-name="#{c.displayName}")

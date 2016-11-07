@@ -22,7 +22,6 @@ MultiAccessory.prototype = {
 		debug('call cmdExec');
     exec(cmd,function(error, stdout, stderr) {
         debug('command:' + cmd);
-				debug('callback:'+callback);
         callback(error, stdout, stderr);
         //this.log(cmd+' exec');
     });
@@ -47,29 +46,46 @@ MultiAccessory.prototype = {
         callback(error);
       } else {
         debug('power function succeeded!');
-        callback(stdout);
+        callback(null, stdout);
       }
     }.bind(this));
   },
 
   getState: function(cmd, callback) {
     debug('cmd:' + cmd);
-    debug('callback:' + callback);
 
     this.cmdExec(cmd, function(error, stdout, stderr) {
       if (error) {
         debug('get state failed: %s', stderr);
         callback(error);
+        //callback();
       } else {
         debug('get state succeeded!');
 				debug('stdout:' + stdout);
-        callback(null, stdout);
+        callback(null, Number(stdout));
+      }
+    }.bind(this));
+  },
+
+  setState: function(characteristic, cmd, state, callback) {
+
+    this.cmdExec(cmd, function(error, stdout, stderr) {
+      if (error) {
+        debug('set state failed: %s', stderr);
+        callback(error);
+      } else if(!stdout) {
+        callback();
+      } else {
+        characteristic.setValue(stdout);
+        debug('set state succeeded!');
+				debug('stdout:' + stdout);
+        callback();
       }
     }.bind(this));
   },
 
   identify: function(callback) {
-    this.log("Identify requested!");
+    //this.log("Identify requested!");
     callback();
   },
 
@@ -83,33 +99,26 @@ MultiAccessory.prototype = {
     // Set Service
     var cmdService = new Service[this.service](this.Name, this.Name);
 
-		debug('cmdS:'+this.service);
     // Set characteristics
+    var getCommand;
     for(var conf in this.config) {
-			//conf = conf.replace(/\s+/g, "");
-      if(conf == 'Name' || conf == 'Off') continue;
+      if(conf == 'Name'|| conf == 'Off' || conf == 'accessory' || conf == 'service' || conf == 'name') continue;
+
 			var chars = cmdService.getCharacteristic(Characteristic[conf.replace(/\s+/g, "")]);
-			debug("chars:"+chars);
-			debug("conf:"+conf);
-			console.log(chars);
       if(conf == 'On') {
         var command = this.config[conf].command;
         var off_cmd = this.config.Off;
 				if(chars) {
         	chars.on('set', this.setPowerState.bind(this, command, off_cmd));
-        	//chars.on('set', this.setPowerState.bind(this, this, command, off_cmd));
         }
       } else if(chars) {
-				console.log(this.config);
         var behavior = this.config[conf].behavior;
         var command = this.config[conf].command;
 				if(behavior == 'get') {
-					debug('get:'+ command);
           chars.on(behavior, this.getState.bind(this, command));
-          //chars.on(behavior, this.getState.bind(command));
         } else {
-          chars.on(behavior, this.cmdExec.bind(this, command));
-					debug('set:'+ command);
+          chars.on('set', this.setState.bind(this, chars, command));
+          //chars.on('get', this.getState.bind(this, 'cat /home/pi/test1.txt'))
         }
 			}
     }
