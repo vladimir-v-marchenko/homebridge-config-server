@@ -27,7 +27,7 @@ div.device
 									p(class="characteristic-#{c.displayName}") #{c.value}.#{c.displayName}:
 										//- behavior
 										if plugin == 'multi'
-											if device[c.displayName] && device[c.displayName].device == "get"
+											if device[c.displayName] && device[c.displayName].behavior == "get"
 												select(name='characteristics-behavior')
 													option(value='get' selected) get
 													option(value='set') set
@@ -46,35 +46,12 @@ div.device
 								p(class="characteristic-Off") Off:
 									input(name="characteristic-Off", value="#{device['Off']}", data-name="Off")
 
-								h3 Optional characteristics
-								each c in d.optionalCharacteristics
-									p(class="characteristic-#{c.displayName}") #{c.displayName}:
-										//- behavior
-										if plugin == 'multi'
-											select(name='characteristics-behavior')
-												option(value='get') get
-												option(value='set') set
-											input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
-										else
-											input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
-									p(class="characteristic-Off") Off:
-										input(name="characteristic-Off", value="#{device['Off']}", data-name="Off")
-
 						else
 							div(name='characterisitics' class='characteristic characteristic-#{d.displayName}' class='hidden')
 								h3 Characteristics
 								p(class="characteristic-Off") Off:
 									input(name="characteristic-Off", value="#{device['Off']}", data-name="Off")
 								each c in d.characteristics
-									p(class="characteristic-#{c.displayName}") #{c.displayName}:
-										//- behavior
-										if plugin == 'multi'
-											select(name='characteristics-behavior')
-												option(value='get') get
-												option(value='set') set
-										input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
-								h3 Optional characteristics
-								each c in d.optionalCharacteristics
 									p(class="characteristic-#{c.displayName}") #{c.displayName}:
 										//- behavior
 										if plugin == 'multi'
