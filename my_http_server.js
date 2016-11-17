@@ -188,6 +188,31 @@ MyHttpServer.prototype._onRequest = function(req, res) {
       });
       break;
 
+      case '/api':
+        switch(requestFile) {
+          case 'characteristics':
+            var i = 0;  
+            var services = [];
+            for(var item in Service) {
+              // console.log(new Service[item](item, item));
+              /* avoid error:
+               * Error: Cannot add a Characteristic with 
+               * the same UUID as another Characteristic 
+               * in this Service: 00000023-0000-1000-8000-0026BB765291
+               * Ignore some services
+               */
+              if(item == 'AccessoryInformation' || item == 'TunneledBTLEAccessoryService') continue;
+              services[i] = new Service[item](item, item);
+              i++;
+            }
+            res.writeHead(200, {'Content-Type': 'text/json'});
+            var data = JSON.stringify(services);
+            res.end(data);
+
+            break;
+        }
+        break;
+
     default:
       debug('%s', 'routing error');
       res.writeHead(404, {'Content-Type': 'text/plain'});

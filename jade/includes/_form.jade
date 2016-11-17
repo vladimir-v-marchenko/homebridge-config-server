@@ -24,7 +24,7 @@ div.device
               div(name='characterisitics' class='characteristic characteristic-#{d.displayName}')
                 h3 Characteristics
                 each c in d.characteristics
-                  p(class="characteristic-#{c.displayName}") #{c.value}.#{c.displayName}:
+                  p(class="characteristic-#{c.displayName}") #{c.displayName}:
                   if c.displayName == 'Name'
                     input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="Off")
                   else if device[c.displayName]
