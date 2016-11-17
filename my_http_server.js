@@ -100,6 +100,7 @@ MyHttpServer.prototype._onRequest = function(req, res) {
           var i = 0;  
           var services = [];
           var c = [];
+          var service_tmp = [];
           for(var item in Service) {
             // console.log(new Service[item](item, item));
             /* avoid error:
@@ -110,21 +111,7 @@ MyHttpServer.prototype._onRequest = function(req, res) {
              */
             if(item == 'AccessoryInformation' || item == 'TunneledBTLEAccessoryService') continue;
             services[i] = new Service[item](item, item);
-            /*
-            var tmp = services[i].characteristics;
-            if(tmp) {
-              console.log(util.inspect(tmp.concat(services[i].optionalCharacteristics)));
-              c[i] = tmp.concat(services[i].optionalCharacteristics);
-            }
-            services[i].characteristics = c.filter(function(x, i, self) {
-                                            return self.indexOf(x) === i;
-                                         });
-            services[i].characteristics = tmp;
-            console.log(util.inspect(services[i].characteristics));
-            services[i].optionalCharacteristics = [];
-            */
             i++;
-            //if(i>4) break;
           }
 
           for(var s in services) {
@@ -132,17 +119,20 @@ MyHttpServer.prototype._onRequest = function(req, res) {
             if(tmp) {
               console.log(typeof tmp);
               tmp = tmp.concat(services[s].optionalCharacteristics);
-              //console.log(tmp);
-              tmp = tmp.filter(function(x, i, self) {
-                                  return self.indexOf(x) === i;
-                                 });
+
+              // remove duplicated characteristics
+              for(var j = 0; j < tmp.length; j++) {
+                var pointer = tmp[j];
+                for(var k = j+1; k < tmp.length; k++) {
+                  if(pointer.displayName == tmp[k].displayName) {
+                    tmp.splice(k, 1);
+                  }
+                }
+              }
             }
-            //console.log(typeof tmp);
-            console.log(util.inspect(services[s].characteristics));
             services[s].characteristics = tmp;
-            //console.log(typeof services[s].characteristics);
+            console.log(util.inspect(services[s].characteristics));
             services[s].optionalCharacteristics = [];
-            //console.log(service);
           }
 
           var config = fs.readFileSync('../config.json', 'UTF-8', function(err, data) {
