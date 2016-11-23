@@ -8,13 +8,14 @@ var util = require('util');
 var url = require('url') ;
 var path = require('path');
 var querystring = require('querystring');
+var index = require('./modules/index');
 
 function MyHttpServer() {
   this._httpServer = http.createServer();
   this._httpServer.on('request', this._onRequest.bind(this));
   //this._httpServer.on('listening', this._onListening.bind(this));
   //this._httpServer.listen(1337, '127.0.0.1');
-  this._httpServer.listen(1337, '192.168.108.219');
+  this._httpServer.listen(1337, '192.168.108.205');
   this._name = 'hoge';
 }
 
@@ -94,68 +95,22 @@ MyHttpServer.prototype._onRequest = function(req, res) {
           break;
 
         /*
-         * Load index.jade
+         * load index.jade
          */
         default :
-          var i = 0;  
-          var services = [];
-          var c = [];
-          var service_tmp = [];
-          for(var item in Service) {
-            // console.log(new Service[item](item, item));
-            /* avoid error:
-             * Error: Cannot add a Characteristic with 
-             * the same UUID as another Characteristic 
-             * in this Service: 00000023-0000-1000-8000-0026BB765291
-             * Ignore some services
-             */
-            if(item == 'AccessoryInformation' || item == 'TunneledBTLEAccessoryService') continue;
-            services[i] = new Service[item](item, item);
-            i++;
+          var idx = new index.Index();
+          var returns = idx.show();
+          console.log(returns);
+          if(returns.err) {
+            debug('%s', returns.err);
+            res.writeHead(404, {'Content-Type': 'text/plain'});
+            res.write('index not found!');
+            res.end();
+          } else {
+            var html = jade.renderFile('jade/index.jade', {data:returns.services, config:returns.config});
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end(html);  // 送信完了しないとだめぽい
           }
-
-          for(var s in services) {
-            var tmp = services[s].characteristics;
-            if(tmp) {
-              console.log(typeof tmp);
-              tmp = tmp.concat(services[s].optionalCharacteristics);
-
-              // remove duplicated characteristics
-              for(var j = 0; j < tmp.length; j++) {
-                var pointer = tmp[j];
-                for(var k = j+1; k < tmp.length; k++) {
-                  if(pointer.displayName == tmp[k].displayName) {
-                    tmp.splice(k, 1);
-                  }
-                }
-              }
-            }
-            services[s].characteristics = tmp;
-            console.log(util.inspect(services[s].characteristics));
-            services[s].optionalCharacteristics = [];
-          }
-
-          var config = fs.readFileSync('../config.json', 'UTF-8', function(err, data) {
-            if(err) {
-              debug('No config file');
-              return '';
-            }
-            return JSON.parse(data);
-          });
-          
-          var j = JSON.parse(config);
-          fs.readFile('html/index.html', 'UTF-8', function(err, data) {
-            if(err) {
-              debug('%s', err);
-              res.writeHead(404, {'Content-Type': 'text/plain'});
-              res.write('index not found!');
-              res.end();
-            } else {
-              var html = jade.renderFile('jade/index.jade', {data:services, config:j});
-              res.writeHead(200, {'Content-Type': 'text/html'});
-              res.end(html);  // 送信完了しないとだめぽい
-            }
-          });
           break;
       }
       break;
