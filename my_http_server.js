@@ -44,10 +44,10 @@ MyHttpServer.prototype._writeConfig = function(config) {
 MyHttpServer.prototype._onRequest = function(req, res) {
   // get list of accessory information
   // console.log(util.inspect(Service, false, null));
-  var reqestPath = path.dirname(req.url);
+  var requestPath = path.dirname(req.url);
   var requestFile = path.basename(req.url);
 
-  switch(reqestPath) {
+  switch(requestPath) {
     /*
      * Load html
      */
@@ -143,9 +143,9 @@ MyHttpServer.prototype._onRequest = function(req, res) {
       });
       break;
 
-      case '/api':
+      case '/api/services':
         switch(requestFile) {
-          case 'characteristics':
+          case 'all':
             var i = 0;  
             var services = [];
             for(var item in Service) {
@@ -165,10 +165,20 @@ MyHttpServer.prototype._onRequest = function(req, res) {
             res.end(data);
 
             break;
+
+          default:
+            console.log(requestFile);
+            var service = new Service[requestFile](requestFile, requestFile);
+            res.writeHead(200, {'Content-Type': 'text/json'});
+            var data = JSON.stringify(service);
+            res.end(data);
+            break;
         }
         break;
 
     default:
+      console.log(requestPath);
+      console.log(requestFile);
       debug('%s', 'routing error');
       res.writeHead(404, {'Content-Type': 'text/plain'});
       res.write('Routing error');
