@@ -1,3 +1,4 @@
+var conf = require('config');
 var http = require('http');
 var debug = require('debug')('MyHttpServer');
 var Service = require("hap-nodejs").Service;
@@ -11,11 +12,14 @@ var querystring = require('querystring');
 var index = require('./modules/index');
 
 function MyHttpServer() {
+  console.log(conf.ADDRESS);
+  console.log(conf.PORT);
+  console.log("hoge");
   this._httpServer = http.createServer();
   this._httpServer.on('request', this._onRequest.bind(this));
   //this._httpServer.on('listening', this._onListening.bind(this));
   //this._httpServer.listen(1337, '127.0.0.1');
-  this._httpServer.listen(1337, '192.168.3.5');
+  this._httpServer.listen(conf.PORT, conf.ADDRESS);
   this._name = 'hoge';
 }
 
