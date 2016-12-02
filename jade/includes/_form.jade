@@ -26,11 +26,17 @@ div.device
                 each c in d.characteristics
                   p(class="characteristic-#{c.displayName}") #{c.displayName}:
                   if c.displayName == 'Name'
-                    input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="Off")
+                    input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
                   else if device[c.displayName]
-                    input(name="characteristic-#{c.displayName}", value="#{device[c.displayName].command}", data-name="Off")
+                    p set: 
+                    input(name="characteristic-#{c.displayName}", value="#{device[c.displayName].command}", data-name="set")
+                    p get:
+                    input(name="characteristic-#{c.displayName}", value="#{device[c.displayName].command}", data-name="get")
                   else
-                    input(name="characteristic-#{c.displayName}", value="", data-name="Off")
+                    p set: 
+                    input(name="characteristic-#{c.displayName}", value="", data-name="set")
+                    p get:
+                    input(name="characteristic-#{c.displayName}", value="", data-name="get")
                 p(class="characteristic-Off") Off:
                   input(name="characteristic-Off", value="#{device['Off']}", data-name="Off")
 

@@ -67,7 +67,6 @@ MyHttpServer.prototype._onRequest = function(req, res) {
               body += chunk;
             });
 
-
             var that = this;
             req.on('end', function(res) {
               console.log('end');
@@ -171,7 +170,6 @@ MyHttpServer.prototype._onRequest = function(req, res) {
             break;
 
           default:
-            console.log(requestFile);
             var service = new Service[requestFile](requestFile, requestFile);
             res.writeHead(200, {'Content-Type': 'text/json'});
             var data = JSON.stringify(service);
@@ -181,8 +179,6 @@ MyHttpServer.prototype._onRequest = function(req, res) {
         break;
 
     default:
-      console.log(requestPath);
-      console.log(requestFile);
       debug('%s', 'routing error');
       res.writeHead(404, {'Content-Type': 'text/plain'});
       res.write('Routing error');

@@ -35,8 +35,11 @@ $(function() {
 					if($(this).val() != "undefined" && $(this).val() != "") {
 						if($(this).prev('select').children('option:selected').val() && key != 'Name') {
 							arr[key] = {};
+              console.log($(this));
 							arr[key]['command'] = $(this).val();
-							arr[key]['behavior'] = $(this).prev('select').children('option:selected').val();
+							//arr[key]['behavior'] = $(this).prev('select').children('option:selected').val();
+							arr[key]['get'] = $(this).next().data('get').val();
+							arr[key]['set'] = $(this).next().data('set').val();
 						} else {
 							console.log(key + ':' + $(this).val());
 							arr[key] = $(this).val();
@@ -63,7 +66,7 @@ $(function() {
 			}
 		});
 		
-		$.ajax({
+		/*$.ajax({
 			type: 'post',
 			url: '/submit',
 			data: JSON.stringify(device),
@@ -72,7 +75,7 @@ $(function() {
 				console.log('success');
 				document.location.href = '/submit';
 			}
-		});
+		});*/
 	}
 
 	function addCharacteristic() {
