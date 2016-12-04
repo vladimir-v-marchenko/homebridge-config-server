@@ -106,7 +106,7 @@ MultiAccessory.prototype = {
 
 			var chars = cmdService.getCharacteristic(Characteristic[conf.replace(/\s+/g, "")]);
       if(conf == 'On') {
-        var command = this.config[conf].command;
+        var command = this.config[conf].set;
         var off_cmd = this.config.Off;
 				if(chars) {
         	chars.on('set', this.setPowerState.bind(this, command, off_cmd));
@@ -117,10 +117,10 @@ MultiAccessory.prototype = {
         var get = this.config[conf].get;
         var set = this.config[conf].set;
 				if(get) {
-          chars.on('get', this.getState.bind(this, command));
+          chars.on('get', this.getState.bind(this, get));
         }
         if(set) {
-          chars.on('set', this.setState.bind(this, chars, command));
+          chars.on('set', this.setState.bind(this, chars, set));
           //chars.on('get', this.getState.bind(this, 'cat /home/pi/test1.txt'))
         }
 			}

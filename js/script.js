@@ -34,7 +34,7 @@ $(function() {
 				characteristic.find('input').each(function() {
 					var key = $(this).data('name');
 					if($(this).val() != "undefined" && $(this).val() != "") {
-						if(key != 'Name') {
+						if(key != 'Name' && key != 'Off') {
 							if(!arr[key]) arr[key] = {};
               if($(this).data('get')) {
                 arr[key]['get'] = $(this).val();
