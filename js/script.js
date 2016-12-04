@@ -22,6 +22,7 @@ $(function() {
 	 * Post config data
 	 */
 	function post() {
+    console.log("hoge");
 		var device = {accessories:[], platforms:[]};
 		var i = 0;
 		$('.device').each(function() {
@@ -33,15 +34,18 @@ $(function() {
 				characteristic.find('input').each(function() {
 					var key = $(this).data('name');
 					if($(this).val() != "undefined" && $(this).val() != "") {
-						if($(this).prev('select').children('option:selected').val() && key != 'Name') {
-							arr[key] = {};
-              console.log($(this));
-							arr[key]['command'] = $(this).val();
-							//arr[key]['behavior'] = $(this).prev('select').children('option:selected').val();
-							arr[key]['get'] = $(this).next().data('get').val();
-							arr[key]['set'] = $(this).next().data('set').val();
+						if(key != 'Name') {
+							if(!arr[key]) arr[key] = {};
+              if($(this).data('get')) {
+                arr[key]['get'] = $(this).val();
+              }
+              if($(this).data('set')) {
+                arr[key]['set'] = $(this).val();
+              }
+              //else {
+							//  arr[key]['command'] = $(this).val();
+							//}//arr[key]['behavior'] = $(this).prev('select').children('option:selected').val();
 						} else {
-							console.log(key + ':' + $(this).val());
 							arr[key] = $(this).val();
 							if(key == 'Name') {
 								arr['name'] = $(this).val();
@@ -66,7 +70,7 @@ $(function() {
 			}
 		});
 		
-		/*$.ajax({
+		$.ajax({
 			type: 'post',
 			url: '/submit',
 			data: JSON.stringify(device),
@@ -75,7 +79,7 @@ $(function() {
 				console.log('success');
 				document.location.href = '/submit';
 			}
-		});*/
+		});
 	}
 
 	function addCharacteristic() {

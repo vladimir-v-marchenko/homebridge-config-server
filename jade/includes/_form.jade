@@ -29,14 +29,14 @@ div.device
                     input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
                   else if device[c.displayName]
                     p set: 
-                    input(name="characteristic-#{c.displayName}", value="#{device[c.displayName].command}", data-name="set")
+                    input(name="characteristic-#{c.displayName}", value="#{device[c.displayName].command}", data-set="set", data-name="#{c.displayName}")
                     p get:
-                    input(name="characteristic-#{c.displayName}", value="#{device[c.displayName].command}", data-name="get")
+                    input(name="characteristic-#{c.displayName}", value="#{device[c.displayName].command}", data-get="get", data-name="#{c.displayName}")
                   else
                     p set: 
-                    input(name="characteristic-#{c.displayName}", value="", data-name="set")
+                    input(name="characteristic-#{c.displayName}", value="", data-set="set", data-name="#{c.displayName}")
                     p get:
-                    input(name="characteristic-#{c.displayName}", value="", data-name="get")
+                    input(name="characteristic-#{c.displayName}", value="", data-get="get", data-name="#{c.displayName}")
                 p(class="characteristic-Off") Off:
                   input(name="characteristic-Off", value="#{device['Off']}", data-name="Off")
 

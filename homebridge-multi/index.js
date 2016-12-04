@@ -112,11 +112,14 @@ MultiAccessory.prototype = {
         	chars.on('set', this.setPowerState.bind(this, command, off_cmd));
         }
       } else if(chars) {
-        var behavior = this.config[conf].behavior;
-        var command = this.config[conf].command;
-				if(behavior == 'get') {
-          chars.on(behavior, this.getState.bind(this, command));
-        } else {
+        //var behavior = this.config[conf].behavior;
+        //var command = this.config[conf].command;
+        var get = this.config[conf].get;
+        var set = this.config[conf].set;
+				if(get) {
+          chars.on('get', this.getState.bind(this, command));
+        }
+        if(set) {
           chars.on('set', this.setState.bind(this, chars, command));
           //chars.on('get', this.getState.bind(this, 'cat /home/pi/test1.txt'))
         }
