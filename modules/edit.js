@@ -62,4 +62,4 @@ Edit.prototype.show = function() {
   return {err: null, services: services, config: j};
 }
 
-exports.Index = Index;
+exports.Edit = Edit;

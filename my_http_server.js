@@ -9,7 +9,7 @@ var util = require('util');
 var url = require('url') ;
 var path = require('path');
 var querystring = require('querystring');
-var index = require('./modules/index');
+var edit = require('./modules/edit');
 
 function MyHttpServer() {
   console.log(conf.ADDRESS);
@@ -98,10 +98,10 @@ MyHttpServer.prototype._onRequest = function(req, res) {
           break;
 
         /*
-         * load index.jade
+         * load edit.jade
          */
-        default :
-          var idx = new index.Index();
+        case 'edit' :
+          var idx = new edit.Edit();
           var returns = idx.show();
           console.log(returns);
           if(returns.err) {
@@ -110,10 +110,37 @@ MyHttpServer.prototype._onRequest = function(req, res) {
             res.write('index not found!');
             res.end();
           } else {
-            var html = jade.renderFile('jade/index.jade', {data:returns.services, config:returns.config});
+            var html = jade.renderFile('jade/edit.jade', {data:returns.services, config:returns.config});
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.end(html);  // 送信完了しないとだめぽい
           }
+          break;
+
+        /*
+         * Load index.jade
+         */
+        default:
+          var config = fs.readFileSync('../config.json', 'UTF-8', function(err, data) {
+            if(err) {
+              debug('No config file');
+              return '';
+            }
+            return JSON.parse(data);
+          });
+
+          var j = JSON.parse(config);
+          fs.readFile('jade/index.jade', 'UTF-8', function(err, data) {
+            if(err) {
+              debug('%s', err);
+              res.writeHead(404, {'Content-Type': 'text/plain'});
+              res.write('jade not found!');
+              res.end();
+            } else {
+              var html = jade.renderFile('jade/index.jade', {data:services, config:j});
+              res.writeHead(200, {'Content-Type': 'text/html'});
+              res.end(html);  // 送信完了しないとだめぽい
+            }
+          });
           break;
       }
       break;
