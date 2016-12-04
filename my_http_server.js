@@ -12,9 +12,6 @@ var querystring = require('querystring');
 var edit = require('./modules/edit');
 
 function MyHttpServer() {
-  console.log(conf.ADDRESS);
-  console.log(conf.PORT);
-  console.log("hoge");
   this._httpServer = http.createServer();
   this._httpServer.on('request', this._onRequest.bind(this));
   //this._httpServer.on('listening', this._onListening.bind(this));
@@ -28,7 +25,7 @@ function MyHttpServer() {
  */
 MyHttpServer.prototype._writeConfig = function(config) {
   console.log('writeconf');
-  var config_orig = fs.readFileSync('../config.json', 'UTF-8', function(err, data) {
+  var config_orig = fs.readFileSync('~/.homebridge/config.json', 'UTF-8', function(err, data) {
     if(err) {
       debug('No config file');
       return '';
