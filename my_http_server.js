@@ -10,14 +10,28 @@ var url = require('url') ;
 var path = require('path');
 var querystring = require('querystring');
 var edit = require('./modules/edit');
+var os = require('os');
 
 function MyHttpServer() {
   this._httpServer = http.createServer();
   this._httpServer.on('request', this._onRequest.bind(this));
   //this._httpServer.on('listening', this._onListening.bind(this));
   //this._httpServer.listen(1337, '127.0.0.1');
-  this._httpServer.listen(conf.PORT, conf.ADDRESS);
+  this._httpServer.listen(1337, getLocalIPAddress());
   this._name = 'hoge';
+}
+
+function getLocalIPAddress() {
+  var interfaces = os.networkInterfaces();
+  console.log(interfaces);
+  for(var dev in interfaces) {
+    interfaces[dev].forEach(function(details) {
+      if (!details.internal){
+        if(details.family == 'IPv4') return details.address;
+      }
+    });
+  }
+  return '';
 }
 
 /*
