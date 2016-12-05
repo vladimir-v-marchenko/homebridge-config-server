@@ -12,7 +12,7 @@ var querystring = require('querystring');
 var edit = require('./modules/edit');
 var os = require('os');
 
-function MyHttpServer() {
+var MyHttpServer = function() {
   this._httpServer = http.createServer();
   this._httpServer.on('request', this._onRequest.bind(this));
   //this._httpServer.on('listening', this._onListening.bind(this));
@@ -229,4 +229,5 @@ MyHttpServer.prototype._onListening = function() {
 
 }
 
-var server = new MyHttpServer();
+exports.MyHttpServer = MyHttpServer;
+//var server = new MyHttpServer();
