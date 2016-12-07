@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+//
+// Run homebridge config server
+//
+
+'use strict';
+
+process.title = 'homebridge-config-server';
+
+// Find the lib path
+var path = require('path');
+var fs = require('fs');
+var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../lib');
+
+require(lib + '/app')();
