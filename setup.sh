@@ -7,7 +7,12 @@ sudo apt-get upgrade
 # Install node
 sudo apt-get install nodejs
 sudo apt-get install npm
-sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
+#sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
+sudo npm cache clean
+sudo npm install n -g
+sudo n stable
+sudo ln -sf /usr/local/bin/node /usr/bin/node
+sudo apt-get purge -y nodejs npm
 
 # Install Avahi
 sudo apt-get install libavahi-compat-libdnssd-dev
