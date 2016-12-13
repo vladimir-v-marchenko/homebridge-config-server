@@ -14,11 +14,19 @@ sudo n stable
 sudo ln -sf /usr/local/bin/node /usr/bin/node
 sudo apt-get purge -y nodejs npm
 
+# using nodebrew
+curl -L git.io/nodebrew | perl - setup
+echo "export PATH=$HOME/.nodebrew/current/bin:$PATH" >> ~/.bashrc
+source ~/.bashrc
+nodebrew install-binary stable
+nodebrew use stable
+
+
 # Install Avahi
 sudo apt-get install libavahi-compat-libdnssd-dev
 
 # Node modules global path
-NODE_PATH = `npm -g root`
+NODE_PATH=`npm -g root`
 
 # Install dependencies
 sudo npm install -g --unsafe-perm homebridge hap-nodejs node-gyp
