@@ -9,6 +9,15 @@ html(lang='ja')
     h1 plugin
     //-form(method='POST', action='/submit')
     div
+      span Name
+      input(value='#{config.bridge.name}', class='bridge-name')
+      span UserName
+      input(value='#{config.bridge.username}', class='bridge-username')
+      span Port
+      input(value='#{config.bridge.port}', class='bridge-port')
+      span Pin
+      input(value='#{config.bridge.pin}', class='bridge-pin')
+    div
       each device in config.accessories
         - var acc = true
         include includes/_form
