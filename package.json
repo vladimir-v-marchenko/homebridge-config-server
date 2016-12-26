@@ -1,6 +1,6 @@
 {
   "name": "homebridge-config-server",
-  "version": "1.0.5",
+  "version": "1.0.51",
   "description": "This program manages config.json for homebridge.",
   "main": "app.js",
   "dependencies": {
