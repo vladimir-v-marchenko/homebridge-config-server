@@ -6,6 +6,10 @@ html(lang='ja')
     script(type='text/javascript', src='js/script.js')
   body
     h1 config page
+    p #{config.bridge.name}
+    p #{config.bridge.username}
+    p #{config.bridge.port}
+    p #{config.bridge.pin}
     each accessory in config.accessories
       each val, key in accessory
         if val.get || val.set
