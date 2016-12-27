@@ -8,3 +8,6 @@ This program manages config.json for homebridge.
 3. For configuration, access the website. `http://[your local ip address]:1337/`
 
 # Configuration
+
+詳しくは→
+http://qiita.com/nyata/private/4c9fa9b9dbd6a88924b1
