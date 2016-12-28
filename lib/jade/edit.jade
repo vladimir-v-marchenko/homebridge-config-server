@@ -17,6 +17,7 @@ html(lang='ja')
       input(value='#{config.bridge.port}', class='bridge-port')
       span Pin
       input(value='#{config.bridge.pin}', class='bridge-pin')
+      hr
     div
       each device in config.accessories
         - var acc = true

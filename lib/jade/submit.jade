@@ -6,6 +6,11 @@ html(lang='ja')
     script(type='text/javascript', src='js/script.js')
   body
     h1 registered
+    p #{config.bridge.name}
+    p #{config.bridge.username}
+    p #{config.bridge.pin}
+    p #{config.bridge.port}
+    hr
     each accessory in config.accessories
       each val, key in accessory
         if val.get || val.set
@@ -20,3 +25,4 @@ html(lang='ja')
       each val, key in platform
         p #{key}: #{val}
       hr
+    a(href='/') index

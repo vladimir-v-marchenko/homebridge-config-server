@@ -10,6 +10,7 @@ html(lang='ja')
     p #{config.bridge.username}
     p #{config.bridge.port}
     p #{config.bridge.pin}
+    hr
     each accessory in config.accessories
       each val, key in accessory
         if val.get || val.set
