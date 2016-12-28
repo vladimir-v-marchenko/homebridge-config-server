@@ -49,10 +49,10 @@ div.device
                   p(class="characteristic-#{c.displayName}") #{c.displayName}:
                     //- behavior
                     if plugin == 'multi'
-                      select(name='characteristics-behavior')
-                        option(value='get') get
-                        option(value='set') set
-                    input(name="characteristic-#{c.displayName}", value="#{device[c.displayName]}", data-name="#{c.displayName}")
+                      p set: 
+                      input(name="characteristic-#{c.displayName}", value="", data-set="set", data-name="#{c.displayName}")
+                      p get:
+                      input(name="characteristic-#{c.displayname}", value="", data-get="get", data-name="#{c.displayname}")
 
   //- Accessory or Platform
   p device:
