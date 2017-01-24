@@ -21,10 +21,7 @@
     "url": "git+https://github.com/vladimir-v-marchenko/homebridge-config-server.git"
   },
   "keywords": [
-    "homebridge",
-    "homebridge-plugin",
-    "config",
-    "server"
+    "homebridge-plugin"
   ],
   "engines": {
     "homebridge": ">=0.2.0",
