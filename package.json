@@ -26,10 +26,10 @@
     "config",
     "server"
   ],
-  "author": "nyata",
+  "author": "Vladimir Marchenko (fork nyata/homebridge-config-server)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nyata/homebridge-config-server/issues"
+    "url": "https://github.com/vladimir-v-marchenko/homebridge-config-server/issues"
   },
-  "homepage": "https://github.com/nyata/homebridge-config-server#readme"
+  "homepage": "https://github.com/vladimir-v-marchenko/homebridge-config-server#readme"
 }
