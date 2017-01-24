@@ -18,11 +18,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nyata/homebridge-config-server.git"
+    "url": "git+https://github.com/vladimir-v-marchenko/homebridge-config-server.git"
   },
   "keywords": [
     "homebridge",
-    "config"
+    "homebridge-plugin",
+    "config",
+    "server"
   ],
   "author": "nyata",
   "license": "MIT",
