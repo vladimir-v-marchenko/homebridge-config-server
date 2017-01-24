@@ -26,6 +26,10 @@
     "config",
     "server"
   ],
+  "engines": {
+    "homebridge": ">=0.2.0",
+    "node": ">=0.12.0"
+  },
   "author": "Vladimir Marchenko (fork nyata/homebridge-config-server)",
   "license": "MIT",
   "bugs": {
