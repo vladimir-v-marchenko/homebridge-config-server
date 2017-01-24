@@ -4,9 +4,9 @@
   "description": "This program manages config.json for homebridge.",
   "main": "app.js",
   "dependencies": {
+    "homebridge": "^0.4.11",
     "debug": "^2.2.0",
     "hap-nodejs": "^0.4.11",
-    "homebridge": "^0.4.11",
     "pug": "^2.0.0-beta7"
   },
   "devDependencies": {},
